@@ -6,14 +6,16 @@ from sqlalchemy import create_engine
 from time import time, sleep
 
 def main(params):
-    user = params.user
-    password = params.password
-    host = params.host
-    port = params.port
+    user = "root"
+    password = "root"
+    host = "pgdatabase"
+    port = "5432"
     db = params.db
     table = params.table
     url = params.url
     file_name = url.split('/')[-1]
+    
+    print(user,password,host,port,db,table,url,file_name)
     
     # download csv from URL using wget
     os.system(f'wget {url} -O {file_name}')
@@ -33,7 +35,7 @@ def main(params):
     df_len = data.shape[0]
 
     # Data Definition Language (DDL): defines the schema
-    print(pd.io.sql.get_schema(data, name='yellow_taxi_data', con=engine))
+    print(pd.io.sql.get_schema(data, name=table, con=engine))
 
     chunk_size = 100000
     chunk_count = 0
@@ -56,10 +58,6 @@ if __name__ == '__main__':
 
     #password, host, port, database name, table name, url of the csv
 
-    parser.add_argument('--user', help='username')
-    parser.add_argument('--password', help='password')
-    parser.add_argument('--host', help='hostname')
-    parser.add_argument('--port', help='port number')
     parser.add_argument('--db', help='database name')
     parser.add_argument('--table', help='name of the tabler')
     parser.add_argument('--url', help='url of the csv')                   
